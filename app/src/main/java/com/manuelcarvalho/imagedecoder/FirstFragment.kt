@@ -1,17 +1,21 @@
 package com.manuelcarvalho.imagedecoder
 
 
+
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.get
+import androidx.core.graphics.set
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_first.*
+import java.io.ByteArrayOutputStream
 
 
 private const val TAG = "FirstFragment"
@@ -39,33 +43,39 @@ class FirstFragment : Fragment() {
 
     }
 
-    fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int): Bitmap? {
-        //Log.d(TAG, "Drawable1 width = ${R.drawable.test}")
-        var drawable =
-            context?.let { ContextCompat.getDrawable(it, R.drawable.test) }
+    fun getBitmapFromVectorDrawable(context: Context?, drawableId: Int) {
+        //val d: Drawable = res.getDrawable(R.drawable.test)
+        val d = context?.getDrawable(R.drawable.test)
+        val bitmap = (d as BitmapDrawable).bitmap
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val bitmapdata: ByteArray = stream.toByteArray()
 
-        val drawable2 =
-            context!!.resources.getDrawable(R.drawable.test)
+        //imageView.setImageBitmap(bitmap)
 
-        val bitmap1 = BitmapFactory.decodeResource(resources, R.drawable.test)
+        val conf = Bitmap.Config.ARGB_8888 // see other conf types
 
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-//            drawable = DrawableCompat.wrap(drawable!!).mutate()
-//        }
-        val bitmap = Bitmap.createBitmap(
-            drawable?.intrinsicWidth!!,
-            drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-        )
+        val bmp =
+            Bitmap.createBitmap(bitmap.height, bitmap.width, conf) // this creates a MUTABLE bitmap
 
-        Log.d(TAG, "bitmap width = ${bitmap.width}")
-        Log.d(TAG, "bitmap height = ${bitmap.height}")
+        //val canvas = Canvas(bmp)
 
-        Log.d(TAG, "Drawable1 width = ${drawable2.minimumWidth}")
-        //Log.d(TAG, "Drawable1 width = ${R.drawable.test}")
-        val canvas = Canvas(bitmap)
-        // drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
-        //drawable.draw(canvas)
-        return bitmap
+        Log.d(TAG, "Drawable1 height = ${bitmap.height}")
+        Log.d(TAG, "Drawable1 width = ${bitmap.width}")
+
+        for (x in 0..127) {
+            for (y in 0..175) {
+                val pix = bitmap.get(y, x)
+                if (pix == -5526613) {       //-1769386 writing, 0 , -5526613, -16777216
+                    bmp.set(x, y, Color.RED)
+                }
+                Log.d(TAG, "Pixel = ${pix}")
+            }
+        }
+        //val pix = bitmap.get(0,0)
+        //Log.d(TAG, "Pixel = ${pix}")
+        imageView.setImageBitmap(bmp)
+
     }
 
 }

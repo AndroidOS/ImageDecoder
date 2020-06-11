@@ -91,5 +91,32 @@ class FirstFragment : Fragment() {
 
     }
 
+//    private fun createFile(){
+//        val sd_main = File(Environment.getExternalStorageDirectory().toString() + "/yourlocation")
+//        var success = true
+//        if (!sd_main.exists())
+//            success = sd_main.mkdir()
+//
+//        if (success) {
+//            val sd = File("filename.txt")
+//
+//            if (!sd.exists())
+//                success = sd.mkdir()
+//
+//            if (success) {
+//                // directory exists or already created
+//                val dest = File(sd, file_name)
+//                try {
+//                    // response is the data written to file
+//                    PrintWriter(dest).use { out -> out.println(response) }
+//                } catch (e: Exception) {
+//                    // handle the exception
+//                }
+//            }
+//        } else {
+//            // directory creation is not successful
+//        }
+//    }
+
 
 }

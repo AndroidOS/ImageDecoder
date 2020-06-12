@@ -1,4 +1,4 @@
-package com.manuelcarvalho.imagedecoder
+package com.manuelcarvalho.imagedecoder.view
 
 
 
@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.core.graphics.get
 import androidx.core.graphics.set
 import androidx.fragment.app.Fragment
+import com.manuelcarvalho.imagedecoder.R
 import kotlinx.android.synthetic.main.fragment_first.*
 import java.io.ByteArrayOutputStream
 

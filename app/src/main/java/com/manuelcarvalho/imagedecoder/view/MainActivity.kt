@@ -1,4 +1,4 @@
-package com.manuelcarvalho.imagedecoder
+package com.manuelcarvalho.imagedecoder.view
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.manuelcarvalho.imagedecoder.R
 
 
 private const val TAG = "MainActivity"

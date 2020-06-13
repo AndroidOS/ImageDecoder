@@ -3,6 +3,7 @@ package com.manuelcarvalho.imagedecoder.view
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -11,6 +12,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 
 private const val TAG = "MainActivity"
@@ -28,8 +32,14 @@ class MainActivity : AppCompatActivity() {
             STORAGE_PERMISSION_CODE
         )
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        checkPermission(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            STORAGE_PERMISSION_CODE
+        )
 
+
+        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+            createFile()
         }
 
 
@@ -97,6 +107,26 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
         }
+    }
+
+    private fun createFile() {
+        val file = File(
+            Environment.getExternalStorageDirectory()
+                .toString() + "/" + File.separator + "test.txt"
+        )
+        file.createNewFile()
+        val data1 = byteArrayOf(1, 1, 0, 0)
+
+        if (file.exists()) {
+            val fo: OutputStream = FileOutputStream(file)
+            fo.write(data1)
+            fo.close()
+            println("file created: $file")
+        }
+
+
+        //file.delete()
+        println("file deleted")
     }
 
 

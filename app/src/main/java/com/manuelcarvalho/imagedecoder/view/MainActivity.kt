@@ -1,6 +1,7 @@
 package com.manuelcarvalho.imagedecoder.view
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.manuelcarvalho.imagedecoder.BuildConfig
 import com.manuelcarvalho.imagedecoder.R
 import java.io.File
 import java.io.FileOutputStream
@@ -110,6 +112,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createFile() {
+
+        //this.getExternalFilesDir()
         val file = File(
             Environment.getExternalStorageDirectory()
                 .toString() + "/" + File.separator + "test.txt"
@@ -127,6 +131,21 @@ class MainActivity : AppCompatActivity() {
 
         //file.delete()
         println("file deleted")
+    }
+
+    fun getAbsoluteDir(ctx: Context, optionalPath: String?): File? {
+        var rootPath: String
+        rootPath = if (optionalPath != null && optionalPath != "") {
+            ctx.getExternalFilesDir(optionalPath)!!.absolutePath
+        } else {
+            ctx.getExternalFilesDir(null)!!.absolutePath
+        }
+        // extraPortion is extra part of file path
+        val extraPortion = ("Android/data/" + BuildConfig.APPLICATION_ID
+                + File.separator + "files" + File.separator)
+        // Remove extraPortion
+        rootPath = rootPath.replace(extraPortion, "")
+        return File(rootPath)
     }
 
 

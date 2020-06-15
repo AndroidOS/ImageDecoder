@@ -2,6 +2,7 @@ package com.manuelcarvalho.imagedecoder.view
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.BuildConfig
 import com.manuelcarvalho.imagedecoder.R
+import com.manuelcarvalho.imagedecoder.utils.formatString
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -41,7 +43,24 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            createFile()
+            //createFile()
+            var stringList = ""
+            var manufacturer = ""
+
+
+            val to = "tom@gmail.com"
+            val subject = "cartridge list for ${manufacturer}."
+            val message = formatString
+
+            val intent = Intent(Intent.ACTION_SEND)
+            val addressees = arrayOf(to)
+            intent.putExtra(Intent.EXTRA_EMAIL, addressees)
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject)
+            intent.putExtra(Intent.EXTRA_TEXT, message)
+            intent.type = "message/rfc822"
+            startActivity(Intent.createChooser(intent, "Select Email Sending App :"))
+
+
         }
 
 

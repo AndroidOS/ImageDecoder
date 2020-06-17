@@ -1,7 +1,6 @@
 package com.manuelcarvalho.imagedecoder.view
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Environment
@@ -12,19 +11,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.manuelcarvalho.imagedecoder.BuildConfig
 import com.manuelcarvalho.imagedecoder.R
-import com.manuelcarvalho.imagedecoder.utils.formatString
-import com.manuelcarvalho.imagedecoder.utils.sendEmail
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.*
 
 
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private val STORAGE_PERMISSION_CODE = 101
+
+    private val filepath = "MyFileStorage"
+    internal var myExternalFile: File? = null
+
+    val fileName = "test.txt"
+    val fileData = "1234567"
+
+    private val isExternalStorageReadOnly: Boolean
+        get() {
+            val extStorageState = Environment.getExternalStorageState()
+            return Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)
+        }
+    private val isExternalStorageAvailable: Boolean
+        get() {
+            val extStorageState = Environment.getExternalStorageState()
+            return Environment.MEDIA_MOUNTED.equals(extStorageState)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +56,10 @@ class MainActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             //createFile()
 
-            sendEmail(this, formatString)
+            //sendEmail(this, formatString)
+            //createFile()
+            readFile()
+
         }
 
 
@@ -116,40 +130,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createFile() {
-
-        //this.getExternalFilesDir()
-        val file = File(
-            Environment.getExternalStorageDirectory()
-                .toString() + "/" + File.separator + "test.txt"
-        )
-        file.createNewFile()
-        val data1 = byteArrayOf(1, 1, 0, 0)
-
-        if (file.exists()) {
-            val fo: OutputStream = FileOutputStream(file)
-            fo.write(data1)
-            fo.close()
-            println("file created: $file")
+        myExternalFile = File(getExternalFilesDir(filepath), fileName)
+        try {
+            val fileOutPutStream = FileOutputStream(myExternalFile)
+            fileOutPutStream.write(fileData.toByteArray())
+            fileOutPutStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-
-
-        //file.delete()
-        println("file deleted")
+        Toast.makeText(applicationContext, "data save", Toast.LENGTH_SHORT).show()
     }
 
-    fun getAbsoluteDir(ctx: Context, optionalPath: String?): File? {
-        var rootPath: String
-        rootPath = if (optionalPath != null && optionalPath != "") {
-            ctx.getExternalFilesDir(optionalPath)!!.absolutePath
-        } else {
-            ctx.getExternalFilesDir(null)!!.absolutePath
+
+    private fun readFile() {
+        //myExternalFile = File(getExternalFilesDir(filepath), fileName)
+        //val filename = fileName.text.toString()
+        myExternalFile = File(getExternalFilesDir(filepath), fileName)
+
+        if (fileName.toString() != null && fileName.toString().trim() != "") {
+            var fileInputStream = FileInputStream(myExternalFile)
+            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder: StringBuilder = StringBuilder()
+            var text: String? = null
+            while ({ text = bufferedReader.readLine(); text }() != null) {
+                stringBuilder.append(text)
+            }
+            fileInputStream.close()
+            //Displaying data on EditText
+            Toast.makeText(applicationContext, stringBuilder.toString(), Toast.LENGTH_SHORT).show()
         }
-        // extraPortion is extra part of file path
-        val extraPortion = ("Android/data/" + BuildConfig.APPLICATION_ID
-                + File.separator + "files" + File.separator)
-        // Remove extraPortion
-        rootPath = rootPath.replace(extraPortion, "")
-        return File(rootPath)
     }
+
 
 }

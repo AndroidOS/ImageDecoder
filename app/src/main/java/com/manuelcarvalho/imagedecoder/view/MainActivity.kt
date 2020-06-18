@@ -2,14 +2,17 @@ package com.manuelcarvalho.imagedecoder.view
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
 import java.io.*
@@ -54,11 +57,16 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+            readFile()
+
+            createUri()
+//                val myFile = myExternalFile
+//                if (myFile != null) {
+//                    sendEmail(this, formatString, myFile)
+//                }
+
             //createFile()
 
-            //sendEmail(this, formatString)
-            //createFile()
-            readFile()
 
         }
 
@@ -129,6 +137,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //https://www.javatpoint.com/kotlin-android-read-and-write-external-storage
     private fun createFile() {
         myExternalFile = File(getExternalFilesDir(filepath), fileName)
         try {
@@ -162,5 +171,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun createUri(): Uri? {
+        val requestFile = File(getExternalFilesDir(filepath), fileName)
+        /*
+         * Most file-related method calls need to be in
+         * try-catch blocks.
+         */
+        // Use the FileProvider to get a content URI
+        val fileUri: Uri? = try {
+            FileProvider.getUriForFile(
+                this@MainActivity,
+                "com.manuelcarvalho.imagedecoder.fileprovider",
+                requestFile
+            )
+        } catch (e: IllegalArgumentException) {
+            Log.e(
+                "File Selector",
+                "The selected file can't be shared: $requestFile"
+            )
+            null
+        }
+        //Log.e(TAG,"Uri ${fileUri}")
+        return fileUri
+    }
 
 }

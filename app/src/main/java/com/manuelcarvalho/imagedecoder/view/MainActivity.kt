@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
+import com.manuelcarvalho.imagedecoder.utils.sendEmail
 import java.io.*
 
 
@@ -62,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             createUri()
 //                val myFile = myExternalFile
 //                if (myFile != null) {
-//                    sendEmail(this, formatString, myFile)
+            sendEmail(this, createUri()!!)
 //                }
 
             //createFile()

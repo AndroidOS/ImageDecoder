@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
+import com.manuelcarvalho.imagedecoder.utils.formatString
 import com.manuelcarvalho.imagedecoder.utils.sendEmail
 import java.io.*
 
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val filepath = "MyFileStorage"
     internal var myExternalFile: File? = null
 
-    val fileName = "test.txt"
+    val fileName = "image.asm"
     val fileData = "1234567"
 
     private val isExternalStorageReadOnly: Boolean
@@ -58,8 +59,8 @@ class MainActivity : AppCompatActivity() {
 
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            readFile()
-
+            //readFile()
+            createFile()
             createUri()
 //                val myFile = myExternalFile
 //                if (myFile != null) {
@@ -143,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         myExternalFile = File(getExternalFilesDir(filepath), fileName)
         try {
             val fileOutPutStream = FileOutputStream(myExternalFile)
-            fileOutPutStream.write(fileData.toByteArray())
+            fileOutPutStream.write(formatString.toByteArray())
             fileOutPutStream.close()
         } catch (e: IOException) {
             e.printStackTrace()

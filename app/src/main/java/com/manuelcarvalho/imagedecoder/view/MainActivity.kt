@@ -1,10 +1,14 @@
 package com.manuelcarvalho.imagedecoder.view
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
 import com.manuelcarvalho.imagedecoder.utils.formatString
 import com.manuelcarvalho.imagedecoder.utils.sendEmail
+import kotlinx.android.synthetic.main.fragment_first.*
 import java.io.*
 
 
@@ -24,6 +29,7 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private val STORAGE_PERMISSION_CODE = 101
+    private val CAMERA_PERMISSION_CODE = 105
 
     private val filepath = "MyFileStorage"
     internal var myExternalFile: File? = null
@@ -86,7 +92,13 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                return true
+            }
+            R.id.action_camera -> {
+                capturePhoto()
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -195,6 +207,19 @@ class MainActivity : AppCompatActivity() {
         }
         //Log.e(TAG,"Uri ${fileUri}")
         return fileUri
+    }
+
+    private fun capturePhoto() {
+
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(cameraIntent, CAMERA_PERMISSION_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PERMISSION_CODE && data != null) {
+            imageView.setImageBitmap(data.extras?.get("data") as Bitmap)
+        }
     }
 
 }

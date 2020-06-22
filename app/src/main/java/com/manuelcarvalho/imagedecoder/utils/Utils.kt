@@ -2,6 +2,8 @@ package com.manuelcarvalho.imagedecoder.utils
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.net.Uri
 import androidx.core.content.ContextCompat.startActivity
 
@@ -24,4 +26,22 @@ fun sendEmail(context: Context, uri: Uri) {
     intent.type = "message/rfc822"
     startActivity(context, Intent.createChooser(intent, "Select Email Sending App :"), null)
 
+}
+
+fun getResizedBitmap(bm: Bitmap, newWidth: Int, newHeight: Int): Bitmap? {
+    val width = bm.width
+    val height = bm.height
+    val scaleWidth = newWidth.toFloat() / width
+    val scaleHeight = newHeight.toFloat() / height
+    // CREATE A MATRIX FOR THE MANIPULATION
+    val matrix = Matrix()
+    // RESIZE THE BIT MAP
+    matrix.postScale(scaleWidth, scaleHeight)
+
+    // "RECREATE" THE NEW BITMAP
+    val resizedBitmap = Bitmap.createBitmap(
+        bm, 0, 0, width, height, matrix, false
+    )
+    bm.recycle()
+    return resizedBitmap
 }

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
@@ -17,9 +16,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.graphics.get
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
 import com.manuelcarvalho.imagedecoder.utils.formatString
+import com.manuelcarvalho.imagedecoder.utils.getResizedBitmap
 import com.manuelcarvalho.imagedecoder.utils.sendEmail
 import kotlinx.android.synthetic.main.fragment_first.*
 import java.io.*
@@ -37,16 +38,16 @@ class MainActivity : AppCompatActivity() {
     val fileName = "image.asm"
     val fileData = "1234567"
 
-    private val isExternalStorageReadOnly: Boolean
-        get() {
-            val extStorageState = Environment.getExternalStorageState()
-            return Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)
-        }
-    private val isExternalStorageAvailable: Boolean
-        get() {
-            val extStorageState = Environment.getExternalStorageState()
-            return Environment.MEDIA_MOUNTED.equals(extStorageState)
-        }
+//    private val isExternalStorageReadOnly: Boolean
+//        get() {
+//            val extStorageState = Environment.getExternalStorageState()
+//            return Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)
+//        }
+//    private val isExternalStorageAvailable: Boolean
+//        get() {
+//            val extStorageState = Environment.getExternalStorageState()
+//            return Environment.MEDIA_MOUNTED.equals(extStorageState)
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -218,8 +219,61 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PERMISSION_CODE && data != null) {
-            imageView.setImageBitmap(data.extras?.get("data") as Bitmap)
+            val newPhoto = (data.extras?.get("data") as Bitmap)
+            val newImage = getResizedBitmap(newPhoto, 300, 200)
+            imageView.setImageBitmap(newImage)
+            Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
+            if (newImage != null) {
+                decodeBitmap(newImage)
+            }
+
         }
     }
+
+    private fun decodeBitmap(bitmap: Bitmap) {
+        Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
+        var emailString = ""
+        var hexNum = ""
+        var lineNum = 0
+        var pixelCount = 0
+
+        for (y in 0..bitmap.height - 1) {
+            for (x in 0..bitmap.width - 1) {
+                val pix = bitmap.get(x, y)
+                lineNum += 1
+                pixelCount += 1
+
+                Log.d(TAG, "${pix}")
+
+//                if (pix == -16777216) {       //-1769386 writing, 0 , -5526613, -16777216
+//                    bmp.set(x, y, Color.BLACK)
+//                    hexNum = "0"
+//                } else {
+//                    bmp.set(x, y, Color.WHITE)
+//                    hexNum = "15"
+//                }
+
+                //Log.d(TAG, "Pixel = ${pix}")
+                if (lineNum > 20) {
+                    lineNum = 0
+                    emailString += "\n    DB " + hexNum + ","
+                } else if (lineNum > 19) {
+                    emailString += hexNum
+                    //lineNum = 0
+                } else {
+                    emailString += hexNum + ","
+                }
+            }
+
+        }
+
+        formatString = emailString
+        //val pix = bitmap.get(0,0)
+        Log.d(TAG, "${emailString}")
+        Log.d(TAG, "${pixelCount}")
+        //imageView.setImageBitmap(bmp)
+
+    }
+
 
 }

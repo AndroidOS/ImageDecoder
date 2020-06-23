@@ -43,7 +43,7 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         var screenWidth = imageView.measuredWidth
-        getBitmapFromVectorDrawable(view.context, 2)
+        //getBitmapFromVectorDrawable(view.context, 2)
 
         view.setOnTouchListener { v, event ->
             val x = event.x

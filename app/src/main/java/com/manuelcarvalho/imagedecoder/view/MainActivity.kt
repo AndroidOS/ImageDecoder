@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.graphics.get
+import androidx.core.graphics.set
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
 import com.manuelcarvalho.imagedecoder.utils.formatString
@@ -231,6 +233,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun decodeBitmap(bitmap: Bitmap) {
+        val conf = Bitmap.Config.ARGB_8888
+        val bmp =
+            Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
+        var minimumVal = 0      //      -15768818
+        var maximumVal = -15768818  //  -1382691
         Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
         var emailString = ""
         var hexNum = ""
@@ -242,16 +249,21 @@ class MainActivity : AppCompatActivity() {
                 val pix = bitmap.get(x, y)
                 lineNum += 1
                 pixelCount += 1
+                if (minimumVal > pix) {
+                    minimumVal = pix
+                }
+                if (maximumVal < pix) {
+                    maximumVal = pix
+                }
+                // Log.d(TAG, "${pix}")
 
-                Log.d(TAG, "${pix}")
-
-//                if (pix == -16777216) {       //-1769386 writing, 0 , -5526613, -16777216
-//                    bmp.set(x, y, Color.BLACK)
-//                    hexNum = "0"
-//                } else {
-//                    bmp.set(x, y, Color.WHITE)
-//                    hexNum = "15"
-//                }
+                if (pix < -7193063) {       //-1769386 writing, 0 , -5526613, -16777216
+                    bmp.set(x, y, Color.BLACK)
+                    hexNum = "0"
+                } else {
+                    bmp.set(x, y, Color.WHITE)
+                    hexNum = "15"
+                }
 
                 //Log.d(TAG, "Pixel = ${pix}")
                 if (lineNum > 20) {
@@ -267,11 +279,12 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        Log.d(TAG, "values = ${minimumVal}  ${maximumVal}")
         formatString = emailString
         //val pix = bitmap.get(0,0)
         Log.d(TAG, "${emailString}")
         Log.d(TAG, "${pixelCount}")
-        //imageView.setImageBitmap(bmp)
+        imageView.setImageBitmap(bmp)
 
     }
 

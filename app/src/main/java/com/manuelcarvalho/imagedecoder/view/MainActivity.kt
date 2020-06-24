@@ -38,18 +38,6 @@ class MainActivity : AppCompatActivity() {
     internal var myExternalFile: File? = null
 
     val fileName = "image.asm"
-    val fileData = "1234567"
-
-//    private val isExternalStorageReadOnly: Boolean
-//        get() {
-//            val extStorageState = Environment.getExternalStorageState()
-//            return Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)
-//        }
-//    private val isExternalStorageAvailable: Boolean
-//        get() {
-//            val extStorageState = Environment.getExternalStorageState()
-//            return Environment.MEDIA_MOUNTED.equals(extStorageState)
-//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -239,7 +227,7 @@ class MainActivity : AppCompatActivity() {
         var minimumVal = 0      //      -15768818
         var maximumVal = -15768818  //  -1382691
         Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
-        var emailString = ""
+        var emailString = "picture DB "
         var hexNum = ""
         var lineNum = 0
         var pixelCount = 0

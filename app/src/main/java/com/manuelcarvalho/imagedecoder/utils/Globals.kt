@@ -1,4 +1,4 @@
 package com.manuelcarvalho.imagedecoder.utils
 
 
-var formatString = ""
+var formatString = "picture DB "

@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,19 +16,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.graphics.get
-import androidx.core.graphics.set
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
 import com.manuelcarvalho.imagedecoder.utils.formatString
 import com.manuelcarvalho.imagedecoder.utils.getResizedBitmap
 import com.manuelcarvalho.imagedecoder.utils.sendEmail
+import com.manuelcarvalho.imagedecoder.viewmodel.AppViewModel
 import kotlinx.android.synthetic.main.fragment_first.*
 import java.io.*
 
 
 private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: AppViewModel
 
     private val STORAGE_PERMISSION_CODE = 101
     private val CAMERA_PERMISSION_CODE = 105
@@ -43,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        viewModel = ViewModelProviders.of(this)[AppViewModel::class.java]
+
 
         checkPermission(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -214,67 +218,68 @@ class MainActivity : AppCompatActivity() {
             imageView.setImageBitmap(newImage)
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {
-                decodeBitmap(newImage)
+                //decodeBitmap(newImage)
+                viewModel.decodeBitmap(newImage)
             }
 
         }
     }
 
-    private fun decodeBitmap(bitmap: Bitmap) {
-        val conf = Bitmap.Config.ARGB_8888
-        val bmp =
-            Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
-        var minimumVal = 0      //      -15768818
-        var maximumVal = -15768818  //  -1382691
-        Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
-        var emailString = "picture DB "
-        var hexNum = ""
-        var lineNum = 0
-        var pixelCount = 0
-
-        for (y in 0..bitmap.height - 1) {
-            for (x in 0..bitmap.width - 1) {
-                val pix = bitmap.get(x, y)
-                lineNum += 1
-                pixelCount += 1
-                if (minimumVal > pix) {
-                    minimumVal = pix
-                }
-                if (maximumVal < pix) {
-                    maximumVal = pix
-                }
-                // Log.d(TAG, "${pix}")
-
-                if (pix < -7193063) {       //-1769386 writing, 0 , -5526613, -16777216
-                    bmp.set(x, y, Color.BLACK)
-                    hexNum = "0"
-                } else {
-                    bmp.set(x, y, Color.WHITE)
-                    hexNum = "15"
-                }
-
-                //Log.d(TAG, "Pixel = ${pix}")
-                if (lineNum > 20) {
-                    lineNum = 0
-                    emailString += "\n    DB " + hexNum + ","
-                } else if (lineNum > 19) {
-                    emailString += hexNum
-                    //lineNum = 0
-                } else {
-                    emailString += hexNum + ","
-                }
-            }
-
-        }
-
-        Log.d(TAG, "values = ${minimumVal}  ${maximumVal}")
-        formatString = emailString
-        //val pix = bitmap.get(0,0)
-        Log.d(TAG, "${emailString}")
-        Log.d(TAG, "${pixelCount}")
-        imageView.setImageBitmap(bmp)
-
-    }
+//    private fun decodeBitmap(bitmap: Bitmap) {
+//        val conf = Bitmap.Config.ARGB_8888
+//        val bmp =
+//            Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
+//        var minimumVal = 0      //      -15768818
+//        var maximumVal = -15768818  //  -1382691
+//        Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
+//        var emailString = "picture DB "
+//        var hexNum = ""
+//        var lineNum = 0
+//        var pixelCount = 0
+//
+//        for (y in 0..bitmap.height - 1) {
+//            for (x in 0..bitmap.width - 1) {
+//                val pix = bitmap.get(x, y)
+//                lineNum += 1
+//                pixelCount += 1
+//                if (minimumVal > pix) {
+//                    minimumVal = pix
+//                }
+//                if (maximumVal < pix) {
+//                    maximumVal = pix
+//                }
+//                // Log.d(TAG, "${pix}")
+//
+//                if (pix < -7193063) {       //-1769386 writing, 0 , -5526613, -16777216
+//                    bmp.set(x, y, Color.BLACK)
+//                    hexNum = "0"
+//                } else {
+//                    bmp.set(x, y, Color.WHITE)
+//                    hexNum = "15"
+//                }
+//
+//                //Log.d(TAG, "Pixel = ${pix}")
+//                if (lineNum > 20) {
+//                    lineNum = 0
+//                    emailString += "\n    DB " + hexNum + ","
+//                } else if (lineNum > 19) {
+//                    emailString += hexNum
+//                    //lineNum = 0
+//                } else {
+//                    emailString += hexNum + ","
+//                }
+//            }
+//
+//        }
+//
+//        Log.d(TAG, "values = ${minimumVal}  ${maximumVal}")
+//        formatString = emailString
+//        //val pix = bitmap.get(0,0)
+//        Log.d(TAG, "${emailString}")
+//        Log.d(TAG, "${pixelCount}")
+//        imageView.setImageBitmap(bmp)
+//
+//    }
 
 
 }

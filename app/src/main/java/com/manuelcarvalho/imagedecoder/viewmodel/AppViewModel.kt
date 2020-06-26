@@ -15,6 +15,7 @@ private const val TAG = "AppViewModel"
 class AppViewModel(application: Application) : BaseViewModel(application) {
 
     val newImage = MutableLiveData<Bitmap>()
+    val progress = MutableLiveData<Int>()
 
     fun decodeBitmap(bitmap: Bitmap) {
         launch {

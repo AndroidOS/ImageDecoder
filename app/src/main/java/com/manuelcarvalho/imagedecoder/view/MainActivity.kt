@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.manuelcarvalho.imagedecoder.R
@@ -72,6 +73,8 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+
+        observeViewModel()
 
 
     }
@@ -215,7 +218,7 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PERMISSION_CODE && data != null) {
             val newPhoto = (data.extras?.get("data") as Bitmap)
             val newImage = getResizedBitmap(newPhoto, 300, 200)
-            imageView.setImageBitmap(newImage)
+            //imageView.setImageBitmap(newImage)
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {
                 //decodeBitmap(newImage)
@@ -280,6 +283,17 @@ class MainActivity : AppCompatActivity() {
 //        imageView.setImageBitmap(bmp)
 //
 //    }
+
+    private fun observeViewModel() {
+        Log.d(TAG, "ObserveViewModel started")
+        viewModel.newImage.observe(this, Observer { image ->
+            image?.let {
+                imageView.setImageBitmap(image)
+                Log.d(TAG, "observeViewModel() fired")
+            }
+        })
+
+    }
 
 
 }

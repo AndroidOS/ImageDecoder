@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -222,6 +223,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {
                 //decodeBitmap(newImage)
+                progressBar.isVisible = true
                 viewModel.decodeBitmap(newImage)
             }
 
@@ -292,6 +294,13 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "observeViewModel() fired")
             }
         })
+
+        viewModel.progress.observe(this, Observer { progress ->
+            progress?.let {
+                progressBar.progress = progress
+            }
+        })
+
 
     }
 

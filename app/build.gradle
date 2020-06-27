@@ -48,5 +48,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleExtensionVersion"
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1'
 
 }

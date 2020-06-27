@@ -13,9 +13,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.get
 import androidx.core.graphics.set
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.manuelcarvalho.imagedecoder.R
 import com.manuelcarvalho.imagedecoder.utils.formatString
+import com.manuelcarvalho.imagedecoder.viewmodel.AppViewModel
 import kotlinx.android.synthetic.main.fragment_first.*
 import java.io.ByteArrayOutputStream
 
@@ -25,6 +29,7 @@ private const val TAG = "FirstFragment"
 class FirstFragment : Fragment() {
 
     var emailString = "picture DB "
+    private lateinit var viewModel: AppViewModel
 
     //private var screenWidth = 0
 
@@ -44,6 +49,17 @@ class FirstFragment : Fragment() {
 
         var screenWidth = imageView.measuredWidth
         //getBitmapFromVectorDrawable(view.context, 2)
+        progressBar.isVisible = false
+
+        progressBar.max = 200
+        //progressBar.min = 0
+        //progressBar.progress = 40
+
+        viewModel = activity?.run {
+            ViewModelProviders.of(this)[AppViewModel::class.java]
+        } ?: throw Exception("Invalid Activity")
+
+        observeViewModel()
 
         view.setOnTouchListener { v, event ->
             val x = event.x
@@ -196,6 +212,16 @@ class FirstFragment : Fragment() {
         Log.d(TAG, "${pixelCount}")
         imageView.setImageBitmap(bmp)
 
+    }
+
+    fun observeViewModel() {
+
+        viewModel.displayProgress.observe(viewLifecycleOwner, Observer { display ->
+            display?.let {
+                progressBar.isVisible = display
+
+            }
+        })
     }
 
 

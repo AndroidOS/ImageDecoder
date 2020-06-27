@@ -16,6 +16,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
 
     val newImage = MutableLiveData<Bitmap>()
     val progress = MutableLiveData<Int>()
+    val displayProgress = MutableLiveData<Boolean>()
 
     fun decodeBitmap(bitmap: Bitmap) {
         launch {
@@ -31,6 +32,9 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             var pixelCount = 0
 
             for (y in 0..bitmap.height - 1) {
+                progress.value = y
+
+                Log.d(TAG, "${y}")
                 for (x in 0..bitmap.width - 1) {
                     val pix = bitmap.get(x, y)
                     lineNum += 1
@@ -64,6 +68,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                 }
             }
             newImage.value = bmp
+            displayProgress.value = false
         }
 
 

@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PERMISSION_CODE && data != null) {
             val newPhoto = (data.extras?.get("data") as Bitmap)
-            val newImage = getResizedBitmap(newPhoto, 300, 200)
+            val newImage = getResizedBitmap(newPhoto, 320, 200)
             //imageView.setImageBitmap(newImage)
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {

@@ -7,6 +7,8 @@ import android.util.Log
 import androidx.core.graphics.get
 import androidx.core.graphics.set
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -19,7 +21,8 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
     val displayProgress = MutableLiveData<Boolean>()
 
     fun decodeBitmap(bitmap: Bitmap) {
-        launch {
+        viewModelScope.launch(Dispatchers.IO) {
+
             val conf = Bitmap.Config.ARGB_8888
             val bmp =
                 Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
@@ -32,8 +35,8 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             var pixelCount = 0
 
             for (y in 0..bitmap.height - 1) {
-                progress.value = y
-
+                //progress.value = y
+                viewModelScope.launch(Dispatchers.Main) { progress.value = y }
                 Log.d(TAG, "${y}")
                 for (x in 0..bitmap.width - 1) {
                     val pix = bitmap.get(x, y)
@@ -67,8 +70,10 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                     }
                 }
             }
-            newImage.value = bmp
-            displayProgress.value = false
+            viewModelScope.launch(Dispatchers.Main) {
+                newImage.value = bmp
+                displayProgress.value = false
+            }
         }
 
 

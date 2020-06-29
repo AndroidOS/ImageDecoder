@@ -26,7 +26,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_first"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_launcher_background"
+        tools:srcCompat="@drawable/ic_launcher_background" />
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -4,13 +4,19 @@
     tools:context="com.manuelcarvalho.imagedecoder.view.MainActivity">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="99"
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_camera"
         android:icon="@drawable/ic_camera"
         android:orderInCategory="100"
+        android:title="@string/action_camera"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_image"
+        android:icon="@drawable/ic_image"
+        android:orderInCategory="102"
         android:title="@string/action_camera"
         app:showAsAction="always" />
 </menu>

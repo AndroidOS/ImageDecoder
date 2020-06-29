@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private val STORAGE_PERMISSION_CODE = 101
     private val CAMERA_PERMISSION_CODE = 105
+    private val PHOTO_PERMISSION_CODE = 106
 
     private val filepath = "MyFileStorage"
     internal var myExternalFile: File? = null
@@ -96,6 +98,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_camera -> {
                 capturePhoto()
+                return true
+            }
+            R.id.action_image -> {
+                decodeVZImage()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -208,6 +214,12 @@ class MainActivity : AppCompatActivity() {
         return fileUri
     }
 
+    private fun captureImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, PHOTO_PERMISSION_CODE)
+    }
+
     private fun capturePhoto() {
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -227,6 +239,13 @@ class MainActivity : AppCompatActivity() {
                 viewModel.decodeBitmap(newImage)
             }
 
+        }
+
+        if (resultCode == Activity.RESULT_OK && requestCode == PHOTO_PERMISSION_CODE && data != null) {
+            //val newPhoto = (data.extras?.get("dat") as Bitmap)
+            //val newPhoto = (data.extras?.get("data") as Bitmap)
+            Log.d(TAG, "Result Ok ${data.extras?.get("data")}")
+            //imageView.setImageBitmap(newPhoto)
         }
     }
 
@@ -302,6 +321,19 @@ class MainActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    private fun decodeVZImage() {
+
+        val icon = BitmapFactory.decodeResource(
+            this.resources,
+            R.drawable.frida5
+        )
+        val newImage = getResizedBitmap(icon, 127, 63)
+        imageView.setImageBitmap(newImage)
+        if (newImage != null) {
+            viewModel.decodeBitmapVZ(newImage)
+        }
     }
 
 

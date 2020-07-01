@@ -8,6 +8,7 @@ import androidx.core.graphics.get
 import androidx.core.graphics.set
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.manuelcarvalho.imagedecoder.utils.formatString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -88,7 +89,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             var minimumVal = -15768818      //      -15768818
             var maximumVal = -15768818  //  -1382691
             Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
-            var emailString = "picture DB "
+            var emailString = "picture .byte "
             var hexNum = ""
             var lineNum = 0
             var pixelCount = 0
@@ -107,51 +108,92 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                     }
                 }
             }
-
+            var vzByte = arrayListOf(1, 2, 3, 4)
             Log.d(TAG, "${minimumVal}  ${maximumVal}")
             for (y in 0..bitmap.height - 1) {
                 //progress.value = y
                 viewModelScope.launch(Dispatchers.Main) { progress.value = y }
                 Log.d(TAG, "${y}")
+                var bitcount = 0
                 for (x in 0..bitmap.width - 1) {
+
                     val pix = bitmap.get(x, y)
                     lineNum += 1
                     pixelCount += 1
-                    if (minimumVal > pix) {
-                        minimumVal = pix
-                    }
-                    if (maximumVal < pix) {
-                        maximumVal = pix
-                    }
+//                    if (minimumVal > pix) {
+//                        minimumVal = pix
+//                    }
+//                    if (maximumVal < pix) {
+//                        maximumVal = pix
+//                    }
                     // Log.d(TAG, "${pix}")
 
                     if (pix < -9768818) {       //-1769386 writing, 0 , -5526613, -16777216
                         bmp.set(x, y, Color.BLACK)
-                        hexNum = "0"
+                        ;hexNum = "0"
+                        vzByte[bitcount] = 0
                     } else {
                         bmp.set(x, y, Color.WHITE)
-                        hexNum = "15"
+                        ;hexNum = "15"
+                        vzByte[bitcount] = 15
                     }
 
                     //Log.d(TAG, "Pixel = ${pix}")
-                    if (lineNum > 20) {
-                        lineNum = 0
-                        emailString += "\n    DB " + hexNum + ","
-                    } else if (lineNum > 19) {
-                        emailString += hexNum
-                        //lineNum = 0
-                    } else {
-                        emailString += hexNum + ","
+
+                    bitcount += 1
+                    if (bitcount > 3) {
+                        bitcount = 0
+                        hexNum = createByte(vzByte)
+                        if (lineNum > 20) {
+                            lineNum = 0
+                            emailString += "\n    .byte " + hexNum + ","
+                        } else if (lineNum > 19) {
+                            emailString += hexNum
+                            //lineNum = 0
+                        } else {
+                            emailString += hexNum + ","
+                        }
                     }
                 }
+
             }
             viewModelScope.launch(Dispatchers.Main) {
                 newImage.value = bmp
                 displayProgress.value = false
             }
+
+            Log.d(TAG, "new String \n ${emailString}")
+            formatString = emailString
         }
 
 
+    }
+
+    private fun createByte(list: List<Int>): String {
+
+        var newByte = 0
+
+        if (list[0] == 15) {
+            newByte += 128
+            newByte += 64
+        }
+
+        if (list[1] == 15) {
+            newByte += 32
+            newByte += 16
+        }
+
+        if (list[2] == 15) {
+            newByte += 8
+            newByte += 4
+        }
+
+        if (list[3] == 15) {
+            newByte += 2
+            newByte += 1
+        }
+        // Log.d(TAG, "${list}   ${newByte}")
+        return newByte.toString()
     }
 
 

@@ -128,14 +128,14 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
 //                    }
                     // Log.d(TAG, "${pix}")
 
-                    if (pix < -9768818) {       //-1769386 writing, 0 , -5526613, -16777216
+                    if (pix < -6768818) {       //-9768818
                         bmp.set(x, y, Color.BLACK)
                         ;hexNum = "0"
-                        vzByte[bitcount] = 0
+                        vzByte[bitcount] = 15
                     } else {
                         bmp.set(x, y, Color.WHITE)
                         ;hexNum = "15"
-                        vzByte[bitcount] = 15
+                        vzByte[bitcount] = 0
                     }
 
                     //Log.d(TAG, "Pixel = ${pix}")

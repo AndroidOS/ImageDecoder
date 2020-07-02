@@ -327,7 +327,7 @@ class MainActivity : AppCompatActivity() {
 
         val icon = BitmapFactory.decodeResource(
             this.resources,
-            R.drawable.fridavze
+            R.drawable.original
         )
         val newImage = getResizedBitmap(icon, 128, 64)
         imageView.setImageBitmap(newImage)

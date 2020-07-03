@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         viewModel = ViewModelProviders.of(this)[AppViewModel::class.java]
+        viewModel.seekBarProgress.value = 50
 
 
         checkPermission(
@@ -327,7 +328,7 @@ class MainActivity : AppCompatActivity() {
 
         val icon = BitmapFactory.decodeResource(
             this.resources,
-            R.drawable.original
+            R.drawable.atat
         )
         val newImage = getResizedBitmap(icon, 128, 64)
         imageView.setImageBitmap(newImage)

@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.core.graphics.get
 import androidx.core.graphics.set
 import androidx.core.view.isVisible
@@ -58,6 +59,27 @@ class FirstFragment : Fragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this)[AppViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+        seekBar.progress = 50
+
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                textview_first.text = "Progress : $progress"
+                viewModel.seekBarProgress.value = progress
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+
+            }
+
+        })
+
+
 
         observeViewModel()
 

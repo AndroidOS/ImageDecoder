@@ -20,6 +20,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
     val newImage = MutableLiveData<Bitmap>()
     val progress = MutableLiveData<Int>()
     val displayProgress = MutableLiveData<Boolean>()
+    val seekBarProgress = MutableLiveData<Int>()
 
     fun decodeBitmap(bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -82,6 +83,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
 
     fun decodeBitmapVZ(bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
+            var changeValue = 0
 
             val conf = Bitmap.Config.ARGB_8888
             val bmp =
@@ -108,13 +110,17 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                     }
                 }
             }
+
+            changeValue = (minimumVal / 100) * seekBarProgress.value!!
             var vzByte = arrayListOf(1, 2, 3, 4)
             Log.d(TAG, "${minimumVal}  ${maximumVal}")
+
             for (y in 0..bitmap.height - 1) {
                 //progress.value = y
                 viewModelScope.launch(Dispatchers.Main) { progress.value = y }
                 Log.d(TAG, "${y}")
                 var bitcount = 0
+
                 for (x in 0..bitmap.width - 1) {
 
                     val pix = bitmap.get(x, y)
@@ -128,7 +134,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
 //                    }
                     // Log.d(TAG, "${pix}")
 
-                    if (pix < -6768818) {       //-9768818
+                    if (pix < changeValue) {       //-6768818
                         bmp.set(x, y, Color.BLACK)
                         ;hexNum = "0"
                         vzByte[bitcount] = 15

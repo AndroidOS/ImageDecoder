@@ -2,11 +2,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.manuelcarvalho.imagedecoder.view.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="99"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/c64bitmap"
+            android:title="@string/action_c64bitmap" />
+        <item
+            android:id="@+id/cocobitmap"
+            android:title="@string/action_cocobitmap"
+            app:showAsAction="never" />
+    </group>
+
+
     <item
         android:id="@+id/action_camera"
         android:icon="@drawable/ic_camera"

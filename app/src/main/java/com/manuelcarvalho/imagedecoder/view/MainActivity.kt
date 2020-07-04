@@ -94,8 +94,9 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> {
-                return true
+            R.id.c64bitmap, R.id.cocobitmap -> {
+                item.isChecked = !item.isChecked
+                true
             }
             R.id.action_camera -> {
                 capturePhoto()
@@ -328,7 +329,7 @@ class MainActivity : AppCompatActivity() {
 
         val icon = BitmapFactory.decodeResource(
             this.resources,
-            R.drawable.atat
+            R.drawable.bart
         )
         val newImage = getResizedBitmap(icon, 128, 64)
         imageView.setImageBitmap(newImage)

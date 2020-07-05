@@ -6,10 +6,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/c64bitmap"
+            android:checked="true"
             android:title="@string/action_c64bitmap" />
         <item
             android:id="@+id/cocobitmap"
             android:title="@string/action_cocobitmap"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/vzbitmap"
+            android:title="@string/action_vzbitmap"
             app:showAsAction="never" />
     </group>
 

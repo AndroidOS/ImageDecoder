@@ -68,14 +68,8 @@ class MainActivity : AppCompatActivity() {
             //readFile()
             createFile()
             createUri()
-//                val myFile = myExternalFile
-//                if (myFile != null) {
+
             sendEmail(this, createUri()!!)
-//                }
-
-            //createFile()
-
-
         }
 
         observeViewModel()
@@ -86,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
+
         return true
     }
 
@@ -94,10 +89,22 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.c64bitmap, R.id.cocobitmap -> {
+            R.id.c64bitmap, R.id.cocobitmap, R.id.vzbitmap -> {
+                //item.isChecked = !item.isChecked
                 item.isChecked = !item.isChecked
+                if (item.itemId == R.id.c64bitmap) {
+                    decode64Image()
+                }
+                if (item.itemId == R.id.vzbitmap) {
+                    decodeVZImage()
+                }
+                if (item.itemId == R.id.cocobitmap) {
+                    decodeCoCoImage()
+                }
+                Toast.makeText(this, "$item ", Toast.LENGTH_SHORT).show()
                 true
             }
+
             R.id.action_camera -> {
                 capturePhoto()
                 return true
@@ -251,62 +258,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun decodeBitmap(bitmap: Bitmap) {
-//        val conf = Bitmap.Config.ARGB_8888
-//        val bmp =
-//            Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
-//        var minimumVal = 0      //      -15768818
-//        var maximumVal = -15768818  //  -1382691
-//        Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
-//        var emailString = "picture DB "
-//        var hexNum = ""
-//        var lineNum = 0
-//        var pixelCount = 0
-//
-//        for (y in 0..bitmap.height - 1) {
-//            for (x in 0..bitmap.width - 1) {
-//                val pix = bitmap.get(x, y)
-//                lineNum += 1
-//                pixelCount += 1
-//                if (minimumVal > pix) {
-//                    minimumVal = pix
-//                }
-//                if (maximumVal < pix) {
-//                    maximumVal = pix
-//                }
-//                // Log.d(TAG, "${pix}")
-//
-//                if (pix < -7193063) {       //-1769386 writing, 0 , -5526613, -16777216
-//                    bmp.set(x, y, Color.BLACK)
-//                    hexNum = "0"
-//                } else {
-//                    bmp.set(x, y, Color.WHITE)
-//                    hexNum = "15"
-//                }
-//
-//                //Log.d(TAG, "Pixel = ${pix}")
-//                if (lineNum > 20) {
-//                    lineNum = 0
-//                    emailString += "\n    DB " + hexNum + ","
-//                } else if (lineNum > 19) {
-//                    emailString += hexNum
-//                    //lineNum = 0
-//                } else {
-//                    emailString += hexNum + ","
-//                }
-//            }
-//
-//        }
-//
-//        Log.d(TAG, "values = ${minimumVal}  ${maximumVal}")
-//        formatString = emailString
-//        //val pix = bitmap.get(0,0)
-//        Log.d(TAG, "${emailString}")
-//        Log.d(TAG, "${pixelCount}")
-//        imageView.setImageBitmap(bmp)
-//
-//    }
-
     private fun observeViewModel() {
         Log.d(TAG, "ObserveViewModel started")
         viewModel.newImage.observe(this, Observer { image ->
@@ -332,6 +283,32 @@ class MainActivity : AppCompatActivity() {
             R.drawable.bart
         )
         val newImage = getResizedBitmap(icon, 128, 64)
+        imageView.setImageBitmap(newImage)
+        if (newImage != null) {
+            viewModel.decodeBitmapVZ(newImage)
+        }
+    }
+
+    private fun decode64Image() {
+
+        val icon = BitmapFactory.decodeResource(
+            this.resources,
+            R.drawable.bart
+        )
+        val newImage = getResizedBitmap(icon, 320, 200)
+        imageView.setImageBitmap(newImage)
+        if (newImage != null) {
+            viewModel.decodeBitmapVZ(newImage)
+        }
+    }
+
+    private fun decodeCoCoImage() {
+
+        val icon = BitmapFactory.decodeResource(
+            this.resources,
+            R.drawable.bart
+        )
+        val newImage = getResizedBitmap(icon, 256, 192)
         imageView.setImageBitmap(newImage)
         if (newImage != null) {
             viewModel.decodeBitmapVZ(newImage)

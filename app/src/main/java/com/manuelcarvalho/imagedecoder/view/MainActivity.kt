@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             sendEmail(this, createUri()!!)
         }
 
+
         observeViewModel()
 
 
@@ -110,7 +111,8 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.action_image -> {
-                decodeVZImage()
+                captureImage()   //decodeVZImage()
+
                 return true
             }
             else -> super.onOptionsItemSelected(item)
@@ -224,8 +226,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun captureImage() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
+        //val intent = Intent(Intent.ACTION_GET_CONTENT)
+        val intent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+        )
+        //val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        //MediaStore.Images.Media.INTERNAL_CONTENT_URI
+        //intent.type = "image/*"
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PHOTO_PERMISSION_CODE)
     }
 
@@ -252,8 +262,8 @@ class MainActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == PHOTO_PERMISSION_CODE && data != null) {
             //val newPhoto = (data.extras?.get("dat") as Bitmap)
-            //val newPhoto = (data.extras?.get("data") as Bitmap)
-            Log.d(TAG, "Result Ok ${data.extras?.get("data")}")
+            val newPhoto = (data.extras?.get("data") as Bitmap?)
+            Log.d(TAG, "Result Ok ${newPhoto}")
             //imageView.setImageBitmap(newPhoto)
         }
     }

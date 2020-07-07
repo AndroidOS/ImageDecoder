@@ -292,6 +292,7 @@ class MainActivity : AppCompatActivity() {
             this.resources,
             R.drawable.bart
         )
+        progressBar.isVisible = true
         val newImage = getResizedBitmap(icon, 128, 64)
         imageView.setImageBitmap(newImage)
         if (newImage != null) {
@@ -305,6 +306,7 @@ class MainActivity : AppCompatActivity() {
             this.resources,
             R.drawable.bart
         )
+        progressBar.isVisible = true
         val newImage = getResizedBitmap(icon, 320, 200)
         imageView.setImageBitmap(newImage)
         if (newImage != null) {
@@ -318,6 +320,7 @@ class MainActivity : AppCompatActivity() {
             this.resources,
             R.drawable.bart
         )
+        progressBar.isVisible = true
         val newImage = getResizedBitmap(icon, 256, 192)
         imageView.setImageBitmap(newImage)
         if (newImage != null) {

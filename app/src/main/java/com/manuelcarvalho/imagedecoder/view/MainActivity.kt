@@ -261,10 +261,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (resultCode == Activity.RESULT_OK && requestCode == PHOTO_PERMISSION_CODE && data != null) {
-            //val newPhoto = (data.extras?.get("dat") as Bitmap)
-            val newPhoto = (data.extras?.get("data") as Bitmap?)
-            Log.d(TAG, "Result Ok ${newPhoto}")
-            //imageView.setImageBitmap(newPhoto)
+
+            //val newPhoto = (data.extras?.get("dat") as Bitmap?)
+            Log.d(TAG, "Result Ok ${data}")
+
+
+            val imageUri = data.data
+            val bitmap =
+                MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
+
+            imageView.setImageBitmap(bitmap)
+            progressBar.isVisible = true
+            viewModel.decodeBitmap(bitmap)
         }
     }
 

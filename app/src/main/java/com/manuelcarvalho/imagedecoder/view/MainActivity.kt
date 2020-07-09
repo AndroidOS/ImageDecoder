@@ -2,6 +2,7 @@ package com.manuelcarvalho.imagedecoder.view
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -42,13 +43,16 @@ class MainActivity : AppCompatActivity() {
     private val filepath = "MyFileStorage"
     internal var myExternalFile: File? = null
 
-    val fileName = "image.asm"
+    private val fileName = "image.asm"
+    private var bitmapW = 128
+    private var bitmapH = 64
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        readSettings()
         viewModel = ViewModelProviders.of(this)[AppViewModel::class.java]
         viewModel.seekBarProgress.value = 50
 
@@ -94,13 +98,21 @@ class MainActivity : AppCompatActivity() {
                 //item.isChecked = !item.isChecked
                 item.isChecked = !item.isChecked
                 if (item.itemId == R.id.c64bitmap) {
-                    decode64Image()
+                    bitmapW = 320
+                    bitmapH = 200
+                    saveSettings()
+
                 }
                 if (item.itemId == R.id.vzbitmap) {
-                    decodeVZImage()
+                    bitmapW = 128
+                    bitmapH = 64
+                    saveSettings()
                 }
                 if (item.itemId == R.id.cocobitmap) {
-                    decodeCoCoImage()
+                    bitmapW = 256
+                    bitmapH = 192
+                    saveSettings()
+
                 }
                 Toast.makeText(this, "$item ", Toast.LENGTH_SHORT).show()
                 true
@@ -270,9 +282,12 @@ class MainActivity : AppCompatActivity() {
             val bitmap =
                 MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
 
-            imageView.setImageBitmap(bitmap)
+            //imageView.setImageBitmap(bitmap)
             progressBar.isVisible = true
-            viewModel.decodeBitmap(bitmap)
+            val newImage1 = getResizedBitmap(bitmap, bitmapW, bitmapH)
+            if (newImage1 != null) {
+                viewModel.decodeBitmap(newImage1)
+            }
         }
     }
 
@@ -334,6 +349,40 @@ class MainActivity : AppCompatActivity() {
         if (newImage != null) {
             viewModel.decodeBitmapVZ(newImage)
         }
+    }
+
+    private fun readSettings() {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        //val defaultValue = resources.getInteger(R.integer.saved_high_score_default_key)
+        val saveBitmapW = sharedPref.getInt("bitmapDim", 128)
+
+        when (saveBitmapW) {
+            128 -> {
+                bitmapW = 128
+                bitmapH = 64
+                this.title = "VZ200"
+            }
+            320 -> {
+                bitmapW = 320
+                bitmapH = 200
+                this.title = "C64"
+            }
+            256 -> {
+                bitmapW = 256
+                bitmapH = 192
+                this.title = "Tandy CoCo2 "
+            }
+        }
+
+    }
+
+    private fun saveSettings() {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putInt("bitmapDim", bitmapW)
+            commit()
+        }
+        readSettings()
     }
 
 

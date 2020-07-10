@@ -2,7 +2,6 @@ package com.manuelcarvalho.imagedecoder.view
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,10 +19,8 @@ private const val TAG = "FirstFragment"
 
 class FirstFragment : Fragment() {
 
-    var emailString = "picture DB "
+    //var emailString = "picture DB "
     private lateinit var viewModel: AppViewModel
-
-    //private var screenWidth = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,13 +36,10 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var screenWidth = imageView.measuredWidth
-        //getBitmapFromVectorDrawable(view.context, 2)
+        //var screenWidth = imageView.measuredWidth
         progressBar.isVisible = false
 
         progressBar.max = 200
-        //progressBar.min = 0
-        //progressBar.progress = 40
 
         viewModel = activity?.run {
             ViewModelProviders.of(this)[AppViewModel::class.java]
@@ -55,7 +49,7 @@ class FirstFragment : Fragment() {
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                textview_first.text = "Progress : $progress"
+                txt_heading.text = "Progress : $progress"
                 viewModel.seekBarProgress.value = progress
 
             }
@@ -74,12 +68,12 @@ class FirstFragment : Fragment() {
 
         observeViewModel()
 
-        view.setOnTouchListener { v, event ->
-            val x = event.x
-            val y = event.y
-            Log.d(TAG, "Touched $x $screenWidth")
-            true
-        }
+//        view.setOnTouchListener { v, event ->
+//            val x = event.x
+//            val y = event.y
+//            Log.d(TAG, "Touched $x $screenWidth")
+//            true
+//        }
 
 
     }

@@ -46,6 +46,7 @@ class FirstFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         seekBar.progress = 50
+        txt_heading.text = "Progress:${seekBar.progress}"
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -67,15 +68,6 @@ class FirstFragment : Fragment() {
 
 
         observeViewModel()
-
-//        view.setOnTouchListener { v, event ->
-//            val x = event.x
-//            val y = event.y
-//            Log.d(TAG, "Touched $x $screenWidth")
-//            true
-//        }
-
-
     }
 
 

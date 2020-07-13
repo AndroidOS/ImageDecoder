@@ -194,32 +194,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-//    private fun readFile() {
-//        //myExternalFile = File(getExternalFilesDir(filepath), fileName)
-//        //val filename = fileName.text.toString()
-//        myExternalFile = File(getExternalFilesDir(filepath), fileName)
-//
-//        if (fileName.toString() != null && fileName.toString().trim() != "") {
-//            var fileInputStream = FileInputStream(myExternalFile)
-//            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
-//            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
-//            val stringBuilder: StringBuilder = StringBuilder()
-//            var text: String? = null
-//            while ({ text = bufferedReader.readLine(); text }() != null) {
-//                stringBuilder.append(text)
-//            }
-//            fileInputStream.close()
-//            //Displaying data on EditText
-//            Toast.makeText(applicationContext, stringBuilder.toString(), Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
     private fun createUri(): Uri? {
         val requestFile = File(getExternalFilesDir(filepath), fileName)
-        /*
-         * Most file-related method calls need to be in
-         * try-catch blocks.
-         */
+
         // Use the FileProvider to get a content URI
         val fileUri: Uri? = try {
             FileProvider.getUriForFile(
@@ -258,7 +236,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PERMISSION_CODE && data != null) {
             val newPhoto = (data.extras?.get("data") as Bitmap)
-            val newImage = getResizedBitmap(newPhoto, 320, 200)
+            val newImage = getResizedBitmap(newPhoto, bitmapW, bitmapW)
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {
                 progressBar.isVisible = true
@@ -302,47 +280,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    private fun decodeVZImage() {
-//
-//        val icon = BitmapFactory.decodeResource(
-//            this.resources,
-//            R.drawable.bart
-//        )
-//        progressBar.isVisible = true
-//        val newImage = getResizedBitmap(icon, 128, 64)
-//        imageView.setImageBitmap(newImage)
-//        if (newImage != null) {
-//            viewModel.decodeBitmapVZ(newImage)
-//        }
-//    }
-//
-//    private fun decode64Image() {
-//
-//        val icon = BitmapFactory.decodeResource(
-//            this.resources,
-//            R.drawable.bart
-//        )
-//        progressBar.isVisible = true
-//        val newImage = getResizedBitmap(icon, 320, 200)
-//        imageView.setImageBitmap(newImage)
-//        if (newImage != null) {
-//            viewModel.decodeBitmapVZ(newImage)
-//        }
-//    }
-//
-//    private fun decodeCoCoImage() {
-//
-//        val icon = BitmapFactory.decodeResource(
-//            this.resources,
-//            R.drawable.bart
-//        )
-//        progressBar.isVisible = true
-//        val newImage = getResizedBitmap(icon, 256, 192)
-//        imageView.setImageBitmap(newImage)
-//        if (newImage != null) {
-//            viewModel.decodeBitmapVZ(newImage)
-//        }
-//    }
 
     private fun readSettings() {
         val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return

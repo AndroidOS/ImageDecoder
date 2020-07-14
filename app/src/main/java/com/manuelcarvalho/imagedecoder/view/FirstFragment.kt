@@ -46,11 +46,11 @@ class FirstFragment : Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         seekBar.progress = 50
-        txt_heading.text = "Progress:${seekBar.progress}"
+        txt_heading.text = "Contrast : ${seekBar.progress}"
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                txt_heading.text = "Progress : $progress"
+                txt_heading.text = "Contrast : $progress"
                 viewModel.seekBarProgress.value = progress
 
             }

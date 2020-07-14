@@ -267,7 +267,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.newImage.observe(this, Observer { image ->
             image?.let {
                 imageView.setImageBitmap(image)
-                Log.d(TAG, "observeViewModel() fired")
+                //Log.d(TAG, "observeViewModel() fired")
             }
         })
 

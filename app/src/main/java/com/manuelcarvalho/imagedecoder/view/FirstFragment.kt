@@ -80,6 +80,13 @@ class FirstFragment : Fragment() {
 
             }
         })
+
+        viewModel.txtInfo.observe(viewLifecycleOwner, Observer { info ->
+            info?.let {
+                txt_heading.text = info
+
+            }
+        })
     }
 
 

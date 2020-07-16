@@ -240,7 +240,11 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {
                 progressBar.isVisible = true
-                viewModel.decodeBitmap(newImage)
+                if (bitmapW == 320) {
+                    viewModel.decodeBitmap(newImage)
+                } else {
+                    viewModel.decodeBitmapVZ(newImage)
+                }
             }
 
         }

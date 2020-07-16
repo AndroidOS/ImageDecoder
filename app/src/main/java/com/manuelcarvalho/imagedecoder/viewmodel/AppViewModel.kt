@@ -57,7 +57,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                     }
                     // Log.d(TAG, "${pix}")
 
-                    if (pix < -7193063) {       //-1769386 writing, 0 , -5526613, -16777216
+                    if (pix < (maximumVal * seekBarProgress.value!!)) {       //-7193063
                         bmp.set(x, y, Color.BLACK)
                         hexNum = "0"
                     } else {
@@ -218,7 +218,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                 }
             }
         }
-        return 0
+        return value / 100
     }
 
 

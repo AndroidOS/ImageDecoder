@@ -236,7 +236,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PERMISSION_CODE && data != null) {
             val newPhoto = (data.extras?.get("data") as Bitmap)
-            val newImage = getResizedBitmap(newPhoto, bitmapW, bitmapW)
+            val newImage = getResizedBitmap(newPhoto, bitmapW, bitmapH)
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {
                 progressBar.isVisible = true
@@ -261,7 +261,12 @@ class MainActivity : AppCompatActivity() {
             progressBar.isVisible = true
             val newImage1 = getResizedBitmap(bitmap, bitmapW, bitmapH)
             if (newImage1 != null) {
-                viewModel.decodeBitmap(newImage1)
+                if (bitmapW == 320) {
+                    viewModel.decodeBitmap(newImage1)
+                } else {
+                    viewModel.decodeBitmapVZ(newImage1)
+                }
+                //viewModel.decodeBitmap(newImage1)
             }
         }
     }

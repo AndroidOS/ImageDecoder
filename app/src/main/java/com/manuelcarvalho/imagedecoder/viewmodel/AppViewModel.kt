@@ -105,7 +105,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             for (y in 0..bitmap.height - 1) {
                 //progress.value = y
                 viewModelScope.launch(Dispatchers.Main) { progress.value = y }
-                Log.d(TAG, "${y}")
+                //Log.d(TAG, "${y}")
                 for (x in 0..bitmap.width - 1) {
                     val pix = bitmap.get(x, y)
                     if (minimumVal > pix) {

@@ -31,4 +31,11 @@
         android:orderInCategory="102"
         android:title="@string/action_camera"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_refresh"
+        android:enabled="false"
+        android:icon="@drawable/refresh"
+        android:orderInCategory="103"
+        android:title="@string/action_refresh"
+        app:showAsAction="always" />
 </menu>

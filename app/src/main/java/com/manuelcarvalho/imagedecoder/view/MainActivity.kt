@@ -48,10 +48,18 @@ class MainActivity : AppCompatActivity() {
     private var bitmapW = 128
     private var bitmapH = 64
 
+    private var isLoaded = false
+
+    private var workBitmap: Bitmap? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        if (workBitmap == null) {
+
+        }
 
         readSettings()
         viewModel = ViewModelProviders.of(this)[AppViewModel::class.java]
@@ -125,6 +133,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_image -> {
                 captureImage()   //decodeVZImage()
+
+                return true
+            }
+            R.id.action_refresh -> {
+                redoImage()   //decodeVZImage()
 
                 return true
             }
@@ -237,13 +250,22 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PERMISSION_CODE && data != null) {
             val newPhoto = (data.extras?.get("data") as Bitmap)
             val newImage = getResizedBitmap(newPhoto, bitmapW, bitmapH)
+            if (newImage != null) {
+                workBitmap = newImage
+            }
             Log.d(TAG, "NewImage   ---  H = ${newImage?.height}  W = ${newImage?.width}")
             if (newImage != null) {
                 progressBar.isVisible = true
                 if (bitmapW == 320) {
+//                    isLoaded = true
+//                    invalidateOptionsMenu()
                     viewModel.decodeBitmap(newImage)
+
                 } else {
+//                    isLoaded = true
+//                    invalidateOptionsMenu()
                     viewModel.decodeBitmapVZ(newImage)
+
                 }
             }
 
@@ -261,9 +283,16 @@ class MainActivity : AppCompatActivity() {
             progressBar.isVisible = true
             val newImage1 = getResizedBitmap(bitmap, bitmapW, bitmapH)
             if (newImage1 != null) {
+                workBitmap = newImage1
+            }
+            if (newImage1 != null) {
                 if (bitmapW == 320) {
+//                    isLoaded = true
+//                    invalidateOptionsMenu()
                     viewModel.decodeBitmap(newImage1)
                 } else {
+//                    isLoaded = true
+//                    invalidateOptionsMenu()
                     viewModel.decodeBitmapVZ(newImage1)
                 }
                 //viewModel.decodeBitmap(newImage1)
@@ -283,6 +312,19 @@ class MainActivity : AppCompatActivity() {
         viewModel.progress.observe(this, Observer { progress ->
             progress?.let {
                 progressBar.progress = progress
+            }
+        })
+
+        viewModel.menuRedo.observe(this, Observer { menu ->
+            Log.d(TAG, "menu changed")
+            menu?.let {
+                if (menu) {
+                    isLoaded = true
+                    invalidateOptionsMenu()
+                } else {
+                    isLoaded = false
+                    invalidateOptionsMenu()
+                }
             }
         })
 
@@ -322,6 +364,22 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
         readSettings()
+    }
+
+    private fun redoImage() {
+        if (workBitmap != null) {
+            viewModel.decodeBitmap(workBitmap!!)
+        }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        if (isLoaded) {
+            //menu.getItem(1).setEnabled(false);
+            menu?.getItem(5)?.isEnabled = true
+        } else {
+            menu?.getItem(5)?.isEnabled = false
+        }
+        return true
     }
 
 

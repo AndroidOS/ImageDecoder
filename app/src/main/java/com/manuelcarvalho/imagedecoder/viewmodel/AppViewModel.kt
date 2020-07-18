@@ -22,12 +22,16 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
     val displayProgress = MutableLiveData<Boolean>()
     val seekBarProgress = MutableLiveData<Int>()
     val txtInfo = MutableLiveData<String>()
+    val menuRedo = MutableLiveData<Boolean>()
 
 
     fun decodeBitmap(bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            viewModelScope.launch(Dispatchers.Main) { txtInfo.value = "Processing" }
+            viewModelScope.launch(Dispatchers.Main) {
+                menuRedo.value = false
+                txtInfo.value = "Processing"
+            }
             var maximumVal = findBitmapLowest(bitmap)
             viewModelScope.launch(Dispatchers.Main) { txtInfo.value = "Creating Bitmap" }
             val conf = Bitmap.Config.ARGB_8888
@@ -35,7 +39,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                 Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
             var minimumVal = 0      //      -15768818
             //var maximumVal = -15768818  //  -1382691
-            Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
+            //Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
             var emailString = "picture DB "
             var hexNum = ""
             var lineNum = 0
@@ -44,7 +48,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             for (y in 0..bitmap.height - 1) {
                 //progress.value = y
                 viewModelScope.launch(Dispatchers.Main) { progress.value = y }
-                Log.d(TAG, "${y}")
+                //Log.d(TAG, "${y}")
                 for (x in 0..bitmap.width - 1) {
                     val pix = bitmap.get(x, y)
                     lineNum += 1
@@ -81,6 +85,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                 newImage.value = bmp
                 displayProgress.value = false
                 txtInfo.value = "Contrast : 50"
+                menuRedo.value = true
             }
         }
 
@@ -101,7 +106,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             var hexNum = ""
             var lineNum = 0
             var pixelCount = 0
-
+            viewModelScope.launch(Dispatchers.Main) { menuRedo.value = false }
             for (y in 0..bitmap.height - 1) {
                 //progress.value = y
                 viewModelScope.launch(Dispatchers.Main) { progress.value = y }
@@ -172,6 +177,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             viewModelScope.launch(Dispatchers.Main) {
                 newImage.value = bmp
                 displayProgress.value = false
+                menuRedo.value = true
             }
 
             Log.d(TAG, "new String \n ${emailString}")

@@ -141,6 +141,11 @@ class MainActivity : AppCompatActivity() {
 
                 return true
             }
+            R.id.action_test -> {
+                vzTest()  //decodeVZImage()
+
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -373,13 +378,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if (isLoaded) {
-            //menu.getItem(1).setEnabled(false);
-            menu?.getItem(5)?.isEnabled = true
-        } else {
-            menu?.getItem(5)?.isEnabled = false
-        }
+        menu?.getItem(5)?.isEnabled = isLoaded
         return true
+    }
+
+    private fun vzTest() {
+
     }
 
 

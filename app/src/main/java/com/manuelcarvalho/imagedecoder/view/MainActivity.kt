@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -383,7 +384,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun vzTest() {
-
+        val icon: Bitmap = BitmapFactory.decodeResource(
+            this.resources,
+            R.drawable.frida4
+        )
+        val newImage = getResizedBitmap(icon, 128, 64)
+        if (newImage != null) {
+            imageView.setImageBitmap(newImage)
+            viewModel.decode4ColorsBitmapVZ(newImage)
+        }
     }
 
 

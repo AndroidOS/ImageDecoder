@@ -28,7 +28,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
     fun decode4ColorsBitmapVZ(bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
             var changeValue = 0
-
+            var unitValule = 0
             val conf = Bitmap.Config.ARGB_8888
             val bmp =
                 Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
@@ -56,9 +56,11 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                 }
             }
 
-            changeValue = (minimumVal / 100) * seekBarProgress.value!!
+            unitValule = ((maximumVal / 4) / 100) * seekBarProgress.value!!
+            changeValue = unitValule * 2
+
             var vzByte = arrayListOf(1, 2, 3, 4)
-            //Log.d(TAG, "${minimumVal}  ${maximumVal}")
+            Log.d(TAG, "vz multi ${minimumVal}  ${maximumVal}  ${changeValue}")
 
             for (y in 0..bitmap.height - 1) {
                 //progress.value = y
@@ -79,8 +81,20 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
 //                    }
                     // Log.d(TAG, "${pix}")
 
-                    if (pix < changeValue) {       //-6768818
-                        bmp.set(x, y, Color.BLACK)
+                    if (pix < changeValue - unitValule) {       //-6768818
+                        bmp.set(x, y, Color.RED)
+                        ;hexNum = "0"
+                        vzByte[bitcount] = 15
+                    }
+
+                    if (pix < changeValue + unitValule) {       //-6768818
+                        bmp.set(x, y, Color.BLUE)
+                        ;hexNum = "0"
+                        vzByte[bitcount] = 15
+                    }
+
+                    if (pix < unitValule) {       //-6768818
+                        bmp.set(x, y, Color.YELLOW)
                         ;hexNum = "0"
                         vzByte[bitcount] = 15
                     } else {
@@ -195,8 +209,8 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             val conf = Bitmap.Config.ARGB_8888
             val bmp =
                 Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
-            var minimumVal = -15768818      //      -15768818
-            var maximumVal = -15768818  //  -1382691
+            var minimumVal = 0      //      -15768818
+            var maximumVal = 0 //  -1382691
             //Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
             var emailString = "picture .byte "
             var hexNum = ""

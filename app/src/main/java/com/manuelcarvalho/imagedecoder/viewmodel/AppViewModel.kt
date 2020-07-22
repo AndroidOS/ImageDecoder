@@ -34,6 +34,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                 Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
             var maximumVal = findBitmapLowest(bitmap)
             var minimumVal = 0      //      -15768818
+            Log.d(TAG, "Number  ${maximumVal}")
 //            var maximumVal = -15768818  //  -1382691
             //Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
             var emailString = "picture .byte "
@@ -81,27 +82,48 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
 //                    }
                     // Log.d(TAG, "${pix}")
 
-                    if (pix < changeValue - unitValule) {       //-6768818
-                        bmp.set(x, y, Color.RED)
-                        ;hexNum = "0"
-                        vzByte[bitcount] = 15
+                    when (pix) {
+                        in maximumVal..maximumVal / 2 -> {
+                            bmp.set(x, y, Color.RED)
+                        }
+                        in maximumVal / 2..maximumVal / 3 -> {
+                            bmp.set(x, y, Color.YELLOW)
+                        }
+                        in maximumVal / 3..maximumVal / 4 -> {
+                            bmp.set(x, y, Color.GREEN)
+                        }
                     }
 
-                    if (pix < changeValue + unitValule) {       //-6768818
-                        bmp.set(x, y, Color.BLUE)
-                        ;hexNum = "0"
-                        vzByte[bitcount] = 15
-                    }
+//                    var result = when(number) {
+//                        0 -> "Invalid number"
+//                        1, 2 -> "Number too low"
+//                        3 -> "Number correct"
+//                        in 4..10 -> "Number too high, but acceptable"
+//                        !in 100..Int.MAX_VALUE -> "Number too high, but solvable"
+//                        else -> "Number too high"
 
-                    if (pix < unitValule) {       //-6768818
-                        bmp.set(x, y, Color.YELLOW)
-                        ;hexNum = "0"
-                        vzByte[bitcount] = 15
-                    } else {
-                        bmp.set(x, y, Color.WHITE)
-                        ;hexNum = "15"
-                        vzByte[bitcount] = 0
-                    }
+
+//                        if (pix < changeValue - unitValule) {       //-6768818
+//                        bmp.set(x, y, Color.RED)
+//                        ;hexNum = "0"
+//                        vzByte[bitcount] = 15
+//                    }
+//
+//                    if (pix < changeValue + unitValule) {       //-6768818
+//                        bmp.set(x, y, Color.BLUE)
+//                        ;hexNum = "0"
+//                        vzByte[bitcount] = 15
+//                    }
+//
+//                    if (pix < unitValule) {       //-6768818
+//                        bmp.set(x, y, Color.YELLOW)
+//                        ;hexNum = "0"
+//                        vzByte[bitcount] = 15
+//                    } else {
+//                        bmp.set(x, y, Color.WHITE)
+//                        ;hexNum = "15"
+//                        vzByte[bitcount] = 0
+//                    }
 
                     //Log.d(TAG, "Pixel = ${pix}")
 

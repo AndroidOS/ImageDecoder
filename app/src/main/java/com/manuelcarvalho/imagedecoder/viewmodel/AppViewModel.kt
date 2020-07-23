@@ -74,23 +74,24 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                     val pix = bitmap.get(x, y)
                     lineNum += 1
                     pixelCount += 1
-//                    if (minimumVal > pix) {
-//                        minimumVal = pix
-//                    }
-//                    if (maximumVal < pix) {
-//                        maximumVal = pix
-//                    }
-                    // Log.d(TAG, "${pix}")
+
 
                     when (pix) {
                         in maximumVal..maximumVal / 2 -> {
-                            bmp.set(x, y, Color.RED)
+                            bmp.set(x, y, Color.BLUE)
+                            vzByte[bitcount] = 15
                         }
                         in maximumVal / 2..maximumVal / 3 -> {
-                            bmp.set(x, y, Color.YELLOW)
+                            bmp.set(x, y, Color.RED)
+                            vzByte[bitcount] = 15
                         }
                         in maximumVal / 3..maximumVal / 4 -> {
                             bmp.set(x, y, Color.GREEN)
+                            vzByte[bitcount] = 15
+                        }
+                        else -> {
+                            bmp.set(x, y, Color.YELLOW)
+                            vzByte[bitcount] = 15
                         }
                     }
 

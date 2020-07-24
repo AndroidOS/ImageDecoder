@@ -79,19 +79,19 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                     when (pix) {
                         in maximumVal..maximumVal / 2 -> {
                             bmp.set(x, y, Color.BLUE)
-                            vzByte[bitcount] = 15
+                            vzByte[bitcount] = 2
                         }
                         in maximumVal / 2..maximumVal / 3 -> {
                             bmp.set(x, y, Color.RED)
-                            vzByte[bitcount] = 15
+                            vzByte[bitcount] = 3
                         }
                         in maximumVal / 3..maximumVal / 4 -> {
                             bmp.set(x, y, Color.GREEN)
-                            vzByte[bitcount] = 15
+                            vzByte[bitcount] = 0
                         }
                         else -> {
                             bmp.set(x, y, Color.YELLOW)
-                            vzByte[bitcount] = 15
+                            vzByte[bitcount] = 1
                         }
                     }
 
@@ -131,7 +131,7 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
                     bitcount += 1
                     if (bitcount > 3) {
                         bitcount = 0
-                        hexNum = createByte(vzByte)
+                        hexNum = createByte4Pix(vzByte)
                         if (lineNum > 20) {
                             lineNum = 0
                             emailString += "\n    .byte " + hexNum + ","
@@ -360,5 +360,68 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
         return value / 100
     }
 
+    private fun createByte4Pix(list: List<Int>): String {
+
+        var newByte = 0
+
+        if (list[0] == 1) {
+            //newByte += 128
+            newByte += 64
+        }
+        if (list[0] == 2) {
+            newByte += 128
+            //newByte += 64
+        }
+        if (list[0] == 3) {
+            newByte += 128
+            newByte += 64
+        }
+
+
+        if (list[1] == 1) {
+            //newByte += 32
+            newByte += 16
+        }
+        if (list[1] == 2) {
+            newByte += 32
+            //newByte += 16
+        }
+        if (list[1] == 3) {
+            newByte += 32
+            newByte += 16
+        }
+
+        if (list[2] == 1) {
+            //newByte += 8
+            newByte += 4
+        }
+
+        if (list[2] == 2) {
+            newByte += 8
+            //newByte += 4
+        }
+
+        if (list[2] == 3) {
+            newByte += 8
+            newByte += 4
+        }
+
+        if (list[3] == 1) {
+            //newByte += 2
+            newByte += 1
+        }
+
+        if (list[3] == 2) {
+            newByte += 2
+            //newByte += 1
+        }
+
+        if (list[3] == 3) {
+            newByte += 2
+            newByte += 1
+        }
+        Log.d(TAG, "${list}   ${newByte}")
+        return newByte.toString()
+    }
 
 }

@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     private var bitmapH = 64
 
     private var isLoaded = false
+    private var is4color = false
 
     private var workBitmap: Bitmap? = null
 
@@ -121,6 +122,13 @@ class MainActivity : AppCompatActivity() {
                 if (item.itemId == R.id.cocobitmap) {
                     bitmapW = 256
                     bitmapH = 192
+                    saveSettings()
+
+                }
+                if (item.itemId == R.id.vz4bit) {
+                    bitmapW = 128
+                    bitmapH = 64
+                    is4color = true
                     saveSettings()
 
                 }
@@ -347,6 +355,7 @@ class MainActivity : AppCompatActivity() {
             128 -> {
                 bitmapW = 128
                 bitmapH = 64
+                is4color = false
                 this.title = "VZ200"
             }
             320 -> {
@@ -359,6 +368,12 @@ class MainActivity : AppCompatActivity() {
                 bitmapH = 192
                 this.title = "Tandy CoCo2 "
             }
+            129 -> {
+                bitmapW = 128
+                bitmapH = 64
+                is4color = true
+                this.title = "VZ200 4 color"
+            }
         }
 
     }
@@ -366,7 +381,11 @@ class MainActivity : AppCompatActivity() {
     private fun saveSettings() {
         val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
         with(sharedPref.edit()) {
-            putInt("bitmapDim", bitmapW)
+            if (is4color) {
+                putInt("bitmapDim", 129)
+            } else {
+                putInt("bitmapDim", bitmapW)
+            }
             commit()
         }
         readSettings()

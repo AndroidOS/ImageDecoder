@@ -5,6 +5,8 @@
     <string name="action_refresh">Redo</string>
     <string name="action_test">test</string>
 
+    <string name="action_vz4bit">VZ 4bit</string>
+
     <string name="action_c64bitmap">C64 bitmap</string>
     <string name="action_cocobitmap">CoCo bitmap</string>
     <string name="action_vzbitmap">VZ200 bitmap</string>

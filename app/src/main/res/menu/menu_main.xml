@@ -16,6 +16,10 @@
             android:id="@+id/vzbitmap"
             android:title="@string/action_vzbitmap"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/vz4bit"
+            android:title="@string/action_vz4bit"
+            app:showAsAction="never" />
     </group>
 
 
@@ -45,4 +49,11 @@
         android:orderInCategory="104"
         android:title="@string/action_test"
         app:showAsAction="always" />
+    <!--    <item-->
+    <!--        android:id="@+id/action_vz4bit"-->
+    <!--        android:enabled="true"-->
+    <!--        android:icon="@drawable/cup"-->
+    <!--        android:orderInCategory="105"-->
+    <!--        android:title="@string/action_vz4bit"-->
+    <!--        app:showAsAction="always" />-->
 </menu>

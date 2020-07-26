@@ -105,23 +105,26 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.c64bitmap, R.id.cocobitmap, R.id.vzbitmap -> {
+            R.id.c64bitmap, R.id.cocobitmap, R.id.vzbitmap, R.id.vz4bit -> {
                 //item.isChecked = !item.isChecked
                 item.isChecked = !item.isChecked
                 if (item.itemId == R.id.c64bitmap) {
                     bitmapW = 320
                     bitmapH = 200
+                    is4color = false
                     saveSettings()
 
                 }
                 if (item.itemId == R.id.vzbitmap) {
                     bitmapW = 128
                     bitmapH = 64
+                    is4color = false
                     saveSettings()
                 }
                 if (item.itemId == R.id.cocobitmap) {
                     bitmapW = 256
                     bitmapH = 192
+                    is4color = false
                     saveSettings()
 
                 }
@@ -129,6 +132,7 @@ class MainActivity : AppCompatActivity() {
                     bitmapW = 128
                     bitmapH = 64
                     is4color = true
+                    Log.d(TAG, "Menu ${is4color}")
                     saveSettings()
 
                 }
@@ -275,11 +279,15 @@ class MainActivity : AppCompatActivity() {
 //                    invalidateOptionsMenu()
                     viewModel.decodeBitmap(newImage)
 
-                } else {
+                }
+                if (bitmapW == 128 && is4color == false) {
 //                    isLoaded = true
 //                    invalidateOptionsMenu()
                     viewModel.decodeBitmapVZ(newImage)
 
+                }
+                if (is4color) {
+                    viewModel.decode4ColorsBitmapVZ(newImage)
                 }
             }
 
@@ -380,6 +388,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun saveSettings() {
         val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        Log.d(TAG, "4 col =  ${is4color}")
         with(sharedPref.edit()) {
             if (is4color) {
                 putInt("bitmapDim", 129)

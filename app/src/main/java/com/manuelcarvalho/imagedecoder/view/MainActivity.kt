@@ -407,7 +407,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.getItem(5)?.isEnabled = isLoaded
+        menu?.getItem(6)?.isEnabled = isLoaded
         return true
     }
 

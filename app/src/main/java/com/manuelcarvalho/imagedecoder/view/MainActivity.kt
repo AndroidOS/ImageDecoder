@@ -308,16 +308,22 @@ class MainActivity : AppCompatActivity() {
                 workBitmap = newImage1
             }
             if (newImage1 != null) {
+                progressBar.isVisible = true
                 if (bitmapW == 320) {
 //                    isLoaded = true
 //                    invalidateOptionsMenu()
                     viewModel.decodeBitmap(newImage1)
-                } else {
+
+                }
+                if (bitmapW == 128 && is4color == false) {
 //                    isLoaded = true
 //                    invalidateOptionsMenu()
                     viewModel.decodeBitmapVZ(newImage1)
+
                 }
-                //viewModel.decodeBitmap(newImage1)
+                if (is4color) {
+                    viewModel.decode4ColorsBitmapVZ(newImage1)
+                }
             }
         }
     }

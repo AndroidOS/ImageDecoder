@@ -42,13 +42,13 @@
         android:orderInCategory="103"
         android:title="@string/action_refresh"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_test"
-        android:enabled="true"
-        android:icon="@drawable/cup"
-        android:orderInCategory="104"
-        android:title="@string/action_test"
-        app:showAsAction="always" />
+    <!--    <item-->
+    <!--        android:id="@+id/action_test"-->
+    <!--        android:enabled="true"-->
+    <!--        android:icon="@drawable/cup"-->
+    <!--        android:orderInCategory="104"-->
+    <!--        android:title="@string/action_test"-->
+    <!--        app:showAsAction="always" />-->
     <!--    <item-->
     <!--        android:id="@+id/action_vz4bit"-->
     <!--        android:enabled="true"-->

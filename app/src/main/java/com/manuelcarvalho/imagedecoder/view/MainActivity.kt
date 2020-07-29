@@ -59,11 +59,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        if (workBitmap == null) {
-
-        }
-
         readSettings()
+//        if (workBitmap == null) {
+//
+//        }
+
+
         viewModel = ViewModelProviders.of(this)[AppViewModel::class.java]
         viewModel.seekBarProgress.value = 50
 
@@ -154,11 +155,11 @@ class MainActivity : AppCompatActivity() {
 
                 return true
             }
-            R.id.action_test -> {
-                vzTest()  //decodeVZImage()
-
-                return true
-            }
+//            R.id.action_test -> {
+//                vzTest()  //decodeVZImage()
+//
+//                return true
+//            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -389,6 +390,7 @@ class MainActivity : AppCompatActivity() {
                 this.title = "VZ200 4 color"
             }
         }
+        invalidateOptionsMenu()
 
     }
 
@@ -414,6 +416,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         menu?.getItem(6)?.isEnabled = isLoaded
+        when (bitmapW) {
+            128 -> {
+                if (is4color) {
+                    menu?.getItem(4)?.isChecked = true
+                } else {
+                    menu?.getItem(3)?.isChecked = true
+                }
+            }
+        }
         return true
     }
 

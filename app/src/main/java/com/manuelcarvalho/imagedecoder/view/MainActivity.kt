@@ -286,6 +286,7 @@ class MainActivity : AppCompatActivity() {
 //                    invalidateOptionsMenu()
                     viewModel.decodeBitmapVZ(newImage)
 
+
                 }
                 if (is4color) {
                     viewModel.decode4ColorsBitmapVZ(newImage)
@@ -319,7 +320,8 @@ class MainActivity : AppCompatActivity() {
                 if (bitmapW == 128 && is4color == false) {
 //                    isLoaded = true
 //                    invalidateOptionsMenu()
-                    viewModel.decodeBitmapVZ(newImage1)
+                    //viewModel.decodeBitmapVZ(newImage1)
+                    viewModel.decodeBitmap(workBitmap!!)
 
                 }
                 if (is4color) {
@@ -419,9 +421,9 @@ class MainActivity : AppCompatActivity() {
         when (bitmapW) {
             128 -> {
                 if (is4color) {
-                    menu?.getItem(4)?.isChecked = true
-                } else {
                     menu?.getItem(3)?.isChecked = true
+                } else {
+                    menu?.getItem(2)?.isChecked = true
                 }
             }
         }

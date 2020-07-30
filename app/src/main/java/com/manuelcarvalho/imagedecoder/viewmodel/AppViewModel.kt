@@ -233,8 +233,9 @@ class AppViewModel(application: Application) : BaseViewModel(application) {
             val bmp =
                 Bitmap.createBitmap(bitmap.width, bitmap.height, conf)
             var minimumVal = 0      //      -15768818
-            var maximumVal = 0 //  -1382691
-            //Log.d(TAG, "NewImage   ---  H = ${bitmap.height}  W = ${bitmap.width}")
+            //var maximumVal = 0 //  -1382691
+            var maximumVal = findBitmapLowest(bitmap) / 2
+
             var emailString = "picture .byte "
             var hexNum = ""
             var lineNum = 0

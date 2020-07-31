@@ -60,9 +60,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         readSettings()
-//        if (workBitmap == null) {
-//
-//        }
 
 
         viewModel = ViewModelProviders.of(this)[AppViewModel::class.java]
@@ -155,11 +152,6 @@ class MainActivity : AppCompatActivity() {
 
                 return true
             }
-//            R.id.action_test -> {
-//                vzTest()  //decodeVZImage()
-//
-//                return true
-//            }
             else -> super.onOptionsItemSelected(item)
         }
     }
